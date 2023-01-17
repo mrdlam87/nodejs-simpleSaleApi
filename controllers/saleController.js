@@ -24,18 +24,18 @@ exports.createSale = (req, res) => {
       (e) => e.productId === productId
     );
     const { price } = products.find((product) => product.id === productId);
-    const cost = quantity * price;
+    const totalPrice = quantity * price;
 
     if (index >= 0) {
-      newSale.totalItems[index].cost += cost;
+      newSale.totalItems[index].totalPrice += totalPrice;
     } else {
       newSale.totalItems.push({
         productId,
-        cost,
+        totalPrice,
       });
     }
 
-    newSale.totalPrice += cost;
+    newSale.totalPrice += totalPrice;
   });
 
   sales.push(newSale);
