@@ -19,18 +19,16 @@ exports.createSale = (req, res) => {
   const newSale = { id: newId, lineItems, totalItems: [], totalPrice: 0 };
 
   lineItems.forEach((item) => {
-    const { productId, quantity } = item;
-    const index = newSale.totalItems.findIndex(
-      (e) => e.productId === productId
-    );
-    const { price } = products.find((product) => product.id === productId);
+    const { id, quantity } = item;
+    const index = newSale.totalItems.findIndex((e) => e.id === id);
+    const { price } = products.find((product) => product.id === id);
     const totalPrice = quantity * price;
 
     if (index >= 0) {
       newSale.totalItems[index].totalPrice += totalPrice;
     } else {
       newSale.totalItems.push({
-        productId,
+        id,
         totalPrice,
       });
     }

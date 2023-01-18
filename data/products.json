@@ -1,6 +1,1 @@
-[
-  { "id": 1, "name": "Chrome Toaster", "price": 100 },
-  { "id": 2, "name": "Copper Kettle", "price": 49.99 },
-  { "id": 3, "name": "Mixing Bowl", "price": 20 },
-  { "id": 4, "name": "TV", "price": 1500 }
-]
+[{"id":1,"name":"Chrome Toaster","price":100},{"id":2,"name":"Copper Kettle","price":49.99},{"id":3,"name":"Mixing Bowl","price":20},{"id":4,"name":"TV","price":1500},{"id":5,"name":"TV","price":1500}]
