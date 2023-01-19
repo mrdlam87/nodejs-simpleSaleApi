@@ -19,6 +19,12 @@ productsRouter
   .get(productController.getAllProducts)
   .post(productController.createProduct);
 
+productsRouter
+  .route("/:id")
+  .get(productController.getProduct)
+  .put(productController.updateProduct)
+  .delete(productController.deleteProduct);
+
 salesRouter
   .route("/")
   .get(saleController.getAllSales)
