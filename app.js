@@ -22,7 +22,7 @@ productsRouter
 productsRouter
   .route("/:id")
   .get(productController.getProduct)
-  .put(productController.updateProduct)
+  .patch(productController.updateProduct)
   .delete(productController.deleteProduct);
 
 salesRouter
