@@ -17,6 +17,9 @@ exports.createSale = (req, res) => {
   const newId = sales.length + 1;
   const lineItems = req.body;
   const newSale = { id: newId, lineItems, totalItems: [], totalPrice: 0 };
+  const discount = +req.query.discount;
+
+  console.log(discount);
 
   lineItems.forEach((item) => {
     const { id, quantity } = item;
@@ -35,6 +38,17 @@ exports.createSale = (req, res) => {
 
     newSale.totalPrice += totalPrice;
   });
+
+  if (discount) {
+    const discounteRate = discount / newSale.totalPrice;
+    newSale.discount = discount;
+    newSale.totalPrice -= discount;
+
+    newSale.totalItems.forEach((item) => {
+      item.discount = discounteRate * item.totalPrice;
+      item.totalPrice -= item.discount;
+    });
+  }
 
   sales.push(newSale);
 
