@@ -1,9 +1,15 @@
 const Sale = require("../models/saleModel");
 const Product = require("../models/productModel");
+const APIFeatures = require("../utils/apiFeatures");
 
 exports.getAllSales = async (req, res) => {
   try {
-    const sales = await Sale.find();
+    const features = new APIFeatures(Sale.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields();
+
+    const sales = await features.query;
 
     res.status(200).json({
       status: "success",
