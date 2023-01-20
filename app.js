@@ -30,6 +30,11 @@ salesRouter
   .get(saleController.getAllSales)
   .post(saleController.createSale);
 
+salesRouter
+  .route("/:id")
+  .get(saleController.getSale)
+  .delete(saleController.deleteSale);
+
 app.use("/products", productsRouter);
 app.use("/sales", salesRouter);
 

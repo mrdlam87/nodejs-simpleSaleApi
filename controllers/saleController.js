@@ -1,29 +1,55 @@
-const fs = require("fs");
-const sales = JSON.parse(fs.readFileSync(`${__dirname}/../data/sales.json`));
-const products = JSON.parse(
-  fs.readFileSync(`${__dirname}/../data/products.json`)
-);
+const Sale = require("../models/saleModel");
+const Product = require("../models/productModel");
 
-exports.getAllSales = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    data: {
-      sales,
-    },
-  });
+exports.getAllSales = async (req, res) => {
+  try {
+    const sales = await Sale.find();
+
+    res.status(200).json({
+      status: "success",
+      results: sales.length,
+      data: {
+        sales,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error,
+    });
+  }
 };
 
-exports.createSale = (req, res) => {
-  const newId = sales.length + 1;
-  const lineItems = req.body;
-  const newSale = { id: newId, lineItems, totalItems: [], totalPrice: 0 };
-  const discount = +req.query.discount;
+exports.getSale = async (req, res) => {
+  try {
+    const sale = await Sale.findById(req.params.id);
 
-  console.log(discount);
+    res.status(200).json({
+      status: "success",
+      data: {
+        sale,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error,
+    });
+  }
+};
+
+exports.createSale = async (req, res) => {
+  const lineItems = req.body;
+  const newSale = { lineItems, totalItems: [], totalPrice: 0 };
+  const discount = +req.query.discount;
+  const products = await Product.find();
+
+  console.log(products);
 
   lineItems.forEach((item) => {
     const { id, quantity } = item;
-    const index = newSale.totalItems.findIndex((e) => e.id === id);
+
+    const index = newSale.totalItems.findIndex((item) => item.id === id);
     const { price } = products.find((product) => product.id === id);
     const totalPrice = quantity * price;
 
@@ -50,18 +76,28 @@ exports.createSale = (req, res) => {
     });
   }
 
-  sales.push(newSale);
+  const sale = await Sale.create(newSale);
 
-  fs.writeFile(
-    `${__dirname}/../data/sales.json`,
-    JSON.stringify(sales),
-    (err) => {
-      res.status(201).json({
-        status: "success",
-        data: {
-          sale: newSale,
-        },
-      });
-    }
-  );
+  res.status(201).json({
+    status: "success",
+    data: {
+      sale,
+    },
+  });
+};
+
+exports.deleteSale = async (req, res) => {
+  try {
+    await Sale.findByIdAndDelete(req.params.id);
+
+    res.status(204).json({
+      status: "success",
+      data: null,
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "fail",
+      message: error,
+    });
+  }
 };
