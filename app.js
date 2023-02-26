@@ -1,12 +1,20 @@
 // IMPORTS
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const productController = require("./controllers/productController");
 const saleController = require("./controllers/saleController");
+
+const corsOptions = {
+  origin: "*",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
 
 // INITIALIZATION
 const app = express();
 
+app.use(cors(corsOptions)); // Use this after the variable declaration
 app.use(express.json());
 app.use(morgan("dev"));
 
